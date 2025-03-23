@@ -13,7 +13,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/books")
-@CrossOrigin(origins = "http://localhost:3000") // Povolení komunikace s Reactem
+@CrossOrigin(origins = "http://localhost:3000")
 public class BookController {
 
     @Autowired
@@ -22,20 +22,17 @@ public class BookController {
     @Autowired
     private LoanRepository loanRepository;
 
-    // Získání všech knih
     @GetMapping
     public List<Book> getAllBooks() {
         return bookRepository.findAll();
     }
 
-    // Přidání nové knihy
     @PostMapping
     public Book addBook(@RequestBody Book book) {
-        book.setAvailable(true); // Nová kniha je dostupná
+        book.setAvailable(true);
         return bookRepository.save(book);
     }
 
-    // Úprava existující knihy
     @PutMapping("/{id}")
     public Book updateBook(@PathVariable Long id, @RequestBody Book bookDetails) {
         return bookRepository.findById(id).map(book -> {
@@ -44,15 +41,12 @@ public class BookController {
             return bookRepository.save(book);
         }).orElseThrow(() -> new RuntimeException("Book not found"));
     }
-
-    // Smazání knihy
     @DeleteMapping("/{id}")
     public void deleteBook(@PathVariable Long id) {
         bookRepository.deleteById(id);
     }
 
-    // Půjčení knihy uživateli
-    @PostMapping("/{bookId}/borrow")
+    @PostMapping("/borrow/{bookId}")
     public Loan borrowBook(@PathVariable Long bookId, @RequestParam String userName) {
         Optional<Book> bookOpt = bookRepository.findById(bookId);
 
@@ -72,7 +66,6 @@ public class BookController {
         }
     }
 
-    // Vrácení knihy
     @PutMapping("/return/{loanId}")
     public Loan returnBook(@PathVariable Long loanId) {
         Optional<Loan> loanOpt = loanRepository.findById(loanId);

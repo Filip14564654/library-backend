@@ -40,9 +40,9 @@ public class LoanService {
                 throw new RuntimeException("Book is already borrowed.");
             }
 
-            Loan loan = new Loan(userName, book, LocalDate.now(), null);
             book.setAvailable(false);
             bookRepository.save(book);
+            Loan loan = new Loan(userName, book, LocalDate.now(), null);
 
             return loanRepository.save(loan);
         } else {
@@ -72,4 +72,5 @@ public class LoanService {
     public List<Loan> getLoanHistory(Long bookId) {
         return loanRepository.findByBookId(bookId);
     }
+
 }

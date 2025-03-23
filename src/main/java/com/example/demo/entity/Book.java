@@ -1,6 +1,7 @@
 package com.example.demo.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.util.List;
 
@@ -14,9 +15,10 @@ public class Book {
     private String title;
     private String author;
 
-    private Boolean available = true; // Default: book is available
+    private Boolean available = true;
 
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
+    //@JsonManagedReference
     private List<Loan> loanHistory;
 
     public Book() {

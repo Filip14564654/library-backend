@@ -18,7 +18,6 @@ public class Book {
     private Boolean available = true;
 
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
-    //@JsonManagedReference
     private List<Loan> loanHistory;
 
     public Book() {
@@ -29,8 +28,6 @@ public class Book {
         this.author = author;
         this.available = true;
     }
-
-    // Getters and Setters
 
     public Long getId() {
         return id;

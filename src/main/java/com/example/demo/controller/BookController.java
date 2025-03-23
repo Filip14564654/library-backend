@@ -45,42 +45,4 @@ public class BookController {
     public void deleteBook(@PathVariable Long id) {
         bookRepository.deleteById(id);
     }
-
-    @PostMapping("/borrow/{bookId}")
-    public Loan borrowBook(@PathVariable Long bookId, @RequestParam String userName) {
-        Optional<Book> bookOpt = bookRepository.findById(bookId);
-
-        if (bookOpt.isPresent()) {
-            Book book = bookOpt.get();
-            if (!book.getAvailable()) {
-                throw new RuntimeException("Kniha je již vypůjčená.");
-            }
-
-            Loan loan = new Loan(userName, book, LocalDate.now(), null);
-            book.setAvailable(false);
-            bookRepository.save(book);
-
-            return loanRepository.save(loan);
-        } else {
-            throw new RuntimeException("Kniha nebyla nalezena.");
-        }
-    }
-
-    @PutMapping("/return/{loanId}")
-    public Loan returnBook(@PathVariable Long loanId) {
-        Optional<Loan> loanOpt = loanRepository.findById(loanId);
-
-        if (loanOpt.isPresent()) {
-            Loan loan = loanOpt.get();
-            loan.setReturnDate(LocalDate.now());
-
-            Book book = loan.getBook();
-            book.setAvailable(true);
-            bookRepository.save(book);
-
-            return loanRepository.save(loan);
-        } else {
-            throw new RuntimeException("Výpůjčka nebyla nalezena.");
-        }
-    }
 }

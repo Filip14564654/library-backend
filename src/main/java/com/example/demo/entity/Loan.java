@@ -15,7 +15,6 @@ public class Loan {
 
     @ManyToOne
     @JoinColumn(name = "book_id", nullable = false)
-    //@JsonBackReference
     private Book book;
 
     private LocalDate loanDate;
